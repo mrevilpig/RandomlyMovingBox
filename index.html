@@ -1,0 +1,66 @@
+
+<html>
+<head>
+<style>
+.box{
+	position:absolute;
+	margin: 0 0 0 0;
+	width:50px;
+	height:50px;
+}
+</style>
+<script>
+var box_num=0;
+function create_box(top,left){
+	var num = box_num;
+	var box = document.createElement("div");
+	var att_id = document.createAttribute("id");
+	var att_class = document.createAttribute("class");
+	var att_style = document.createAttribute("style");
+	var background = "#"+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)+(Math.floor(Math.random()*16)).toString(16)
+	var att_onclick = document.createAttribute("onclick");
+	
+	box_num++;
+	att_id.value="box_"+num;
+	att_class.value="box";
+	att_style.value="top:"+top+"px; left:"+left+"px; background-color: "+background+";";
+	att_onclick.value = "duplicate(this)";
+	
+	document.body.appendChild(box);
+	document.getElementsByTagName("div")[num].setAttributeNode(att_id);
+	document.getElementById(att_id.value).setAttributeNode(att_class);
+	document.getElementById(att_id.value).setAttributeNode(att_style);
+	document.getElementById(att_id.value).setAttributeNode(att_onclick);
+	
+	randmove(att_id.value, top, left, background);
+}
+
+function randmove(id, t, l, b){
+	var n=1;
+	if(Math.random()<0.5){
+		n=-1;
+	}
+	var move_x = Math.floor(Math.random()*11-5);
+	var move_y = n * (5 - Math.abs(move_x));
+	setInterval(function(){
+		if((t+move_x<0&&move_x<0)||(t+move_x+50>window.innerHeight&&move_x>0)){
+			move_x*=-1;
+		}
+		if((l+move_y<0&&move_y<0)||(l+move_y+50>window.innerWidth&&move_y>0)){
+			move_y*=-1;
+		}
+		t=t+move_x;
+		l=l+move_y;
+		document.getElementById(id).attributes.style.value="top:"+t+"px; left:"+l+"px; background-color: "+b+";";
+	},30);
+}
+
+function duplicate(e){
+	create_box(parseInt(e.style.top),parseInt(e.style.left));
+}
+
+</script>
+</head>
+<body onload=create_box(100,100)>
+</body>
+</html>
